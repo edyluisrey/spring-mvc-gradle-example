@@ -1,0 +1,38 @@
+apply plugin: 'java'  
+apply plugin: 'war'  
+apply plugin: 'eclipse-wtp'  
+  
+repositories {  
+   mavenCentral()  
+}  
+   
+dependencies {  
+   providedCompile 'javax.servlet:servlet-api:2.5'  
+   compile 'org.springframework:spring-webmvc:4.0.3.RELEASE' 
+   compile 'org.springframework:spring-context:4.0.3.RELEASE'
+   compile 'org.springframework:spring-tx:4.0.3.RELEASE' 
+   compile 'org.springframework:spring-orm:4.0.3.RELEASE'
+   compile 'org.thymeleaf:thymeleaf-spring4:2.1.4.RELEASE'  
+   compile 'org.thymeleaf:thymeleaf:2.1.4.RELEASE' 
+   compile 'org.hibernate:hibernate-core:4.3.5.Final'  
+   compile 'org.hibernate:hibernate-entitymanager:4.3.5.Final'
+   compile 'mysql:mysql-connector-java:5.1.35'
+   compile 'commons-dbcp:commons-dbcp:1.4'
+   runtime 'javax.servlet:jstl:1.1.2' 
+    
+} 
+
+war {    
+    webInf { from 'WebContent/WEB-INF'} // adds a file-set to the WEB-INF dir.    
+    classpath fileTree('WebContent/WEB-INF/lib') // adds a file-set to the WEB-INF/lib dir.
+    webXml = file('WebContent/WEB-INF/web.xml') // copies a file to WEB-INF/web.xml        
+    //from('WebContent') { include ('bootstrap/css/*.css', 'bootstrap/js/*.js', 'bootstrap/img/*.*')  }
+}
+ 
+task deploy (dependsOn: war){
+copy {
+    from "build/libs"
+    into "C:/apache-tomcat-7.0.53/webapps"
+    include "*.war"
+}
+}
